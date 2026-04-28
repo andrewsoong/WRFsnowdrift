@@ -21,11 +21,12 @@ CONTAINS
             moist, psis,  sigma, rhum, swdown, snowsublacc,                 &
             setvel, rmean,                                                  &
             fdep, snowdepacc, snowhdrift, snowload, snowdepacckg,           &
+            glw, xkmv, xkhv,                                          &
             ids,ide, jds,jde, kds,kde,                                      &
             ims,ime, jms,jme, kms,kme,                                      &
             i_start,i_end, j_start,j_end, kts,kte, num_tiles ) 
             
- USE snowero                                !snowerosion
+ USE SNOWERO                               !snowerosion
  USE snowvel                                !snow_vel
  USE snowsub                               !snowsublimation
  USE snowset                                !snowsettling
@@ -45,12 +46,12 @@ CONTAINS
  REAL,DIMENSION(ims:ime,kms:kme,jms:jme), INTENT(INOUT) :: t_phy, snowsublacc
  REAL,DIMENSION(ims:ime,kms:kme,jms:jme), INTENT(OUT) :: tempch, moistch, snowsubl, tempchacc, moistchacc,  & 
 						      psis, sigma, rhum, setvel, rmean
- REAL,DIMENSION(ims:ime,kms:kme,jms:jme), INTENT(IN) :: rho_phy, alt, p_phy, zmid, zlow, dz8w, u, v
+ REAL,DIMENSION(ims:ime,kms:kme,jms:jme), INTENT(IN) :: rho_phy, alt, p_phy, zmid, zlow, dz8w, u, v, xkmv, xkhv
  REAL,DIMENSION(ims:ime,jms:jme), INTENT(INOUT) :: snow, snowh,snoweracc, snowdepacc, phis, phis_end, phim,           &
                                                  snoweracckg, snowdepacckg
  REAL,DIMENSION(ims:ime,jms:jme), INTENT(OUT) :: snowload, snowhdrift, fsalt, fero, fdep,                   &
 					       rhodrift, uth, ustarcor, hsalt
- REAL,DIMENSION(ims:ime,jms:jme), INTENT(IN) :: CDA, swdown, ustar
+ REAL,DIMENSION(ims:ime,jms:jme), INTENT(IN) :: CDA, swdown, ustar, glw
  REAL,INTENT(IN) :: dt, g
  INTEGER         :: ij, its,ite, jts,jte
  
@@ -101,7 +102,7 @@ DO ij = 1 , num_tiles   !tile loop
                              dz8w, t_phy, p_phy, rmean,                                   &
                              alt, snowsubl, tempch, moistch, tempchacc, moistchacc,       &
                              moist, swdown, psis,sigma, rhum,                             &
-                             ustar, zmid, zlow, setvel, snowsublacc,                      &
+                             ustar, zmid, zlow, setvel, snowsublacc,glw,xkmv,xkhv,                      &
                              ids,ide,jds,jde,kds,kde,                                     &
                              ims,ime,jms,jme,kms,kme,                                     &
                              its,ite,jts,jte,kts,kte)
@@ -125,11 +126,3 @@ DO ij = 1 , num_tiles   !tile loop
 
  END SUBROUTINE snow_driver
 END MODULE snowdriver
-               
-    
-            
-            
-            
-            
-            
-            
